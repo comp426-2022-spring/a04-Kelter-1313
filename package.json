@@ -1,0 +1,26 @@
+{
+  "dependencies": {
+    "better-sqlite3": "^7.5.1",
+    "express": "^4.17.3",
+    "minimist": "^1.2.6",
+    "morgan": "^1.10.0"
+  },
+  "name": "a04-kelter-1313",
+  "description": "sqlite stuff",
+  "version": "1.0.0",
+  "main": "database.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/comp426-2022-spring/a04-Kelter-1313.git"
+  },
+  "author": "kelter-1313",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/comp426-2022-spring/a04-Kelter-1313/issues"
+  },
+  "homepage": "https://github.com/comp426-2022-spring/a04-Kelter-1313#readme"
+}
