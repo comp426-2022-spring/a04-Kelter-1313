@@ -19,7 +19,7 @@ if (row===undefined){
     // Set a const that will contain your SQL commands to initialize the database.
     const sqlInit = `
         CREATE TABLE accesslog ( 
-            
+        id INTEGER PRIMARY KEY,
         remoteaddr TEXT,
         remoteuser TEXT,
         time TEXT,
@@ -32,18 +32,7 @@ if (row===undefined){
         useragent TEXT
         );
 
-        INSERT INTO accesslog (remoteaddr ,
-            remoteuser ,
-            time ,
-            method ,
-            url ,
-            protocol ,
-            httpversion ,
-            status ,
-            referer ,
-            useragent) VALUES 
-        ('filler','filler', 'filler', 'filler', 'filler', 'filler', 'filler', 'filler', 'filler', 'filler');
-    `;
+    `
 // Execute SQL commands that we just wrote above.
     db.exec(sqlInit);
 // Echo information about what we just did to the console.

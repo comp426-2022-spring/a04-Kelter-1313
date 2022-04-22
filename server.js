@@ -1,5 +1,6 @@
 // Require http module
 const http = require('http')
+const morgan = require("morgan")
 // Require fs module
 const fs = require('fs')
 
@@ -22,19 +23,6 @@ if(args["log"] == null || args["log"] == "true"){
 // ^^ --log behavior 
 
 
-if(args["debug"] == "true" || args["debug"] == null){
-  /* must create endpoints
-
-  --debug	If set to true, creates endlpoints /app/log/access/ which returns
-              	a JSON access log from the database and /app/error which throws 
-              	an error with the message "Error test successful." Defaults to 
-		false.
-
-*/
-  
-}
-
-
 var port = args["por"]
 // Make this const default to port 3000 if there is no argument given for `--port`.
 if (port == null){
@@ -49,44 +37,75 @@ var server = app.listen(port, () => {
   console.log(`App is running on port ${port}`)
 })
 
-app.get("/app/", (req, res, next) => {
+app.use((req, res, next) => {
+  let logdata = {
+    remoteaddr: req.ip,
+    remoteuser: req.user,
+    time: Date.now(),
+    method: req.method,
+    url: req.url,
+    protocol: req.protocol,
+    httpversion: req.httpVersion,
+    status: res.statusCode,
+    referer: req.headers['referer'],
+    useragent: req.headers['user-agent']
+  }
+  if(args["log"] == "false"){
+
+  }else{
+    const accessLog = fs.createWriteStream('access.log', { flags: 'a' })
+    // Set up the access logging middleware
+    app.use(
+      morgan('combined', { stream: accessLog })
+      )
+  }
+  const stmt = db.prepare(`INSERT INTO accesslog (remoteaddr ,
+    remoteuser ,
+    time ,
+    method ,
+    url ,
+    protocol ,
+    httpversion ,
+    status ,
+    referer ,
+    useragent) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+  `)
+  const info = stmt.run(logdata.remoteaddr, logdata.remoteuser, logdata.time, logdata.method, logdata.url, logdata.protocol, logdata.httpversion, logdata.status, logdata.referer, logdata.useragent)
+  next()
+  })
+
+app.get("/app", (req, res, next) => {
   res.json({"message":"Your API works! (200)"})
   res.status(200)
+  next()
 })
 
-app.post("/app/new/user",(req, res, next) => {
+if(args["debug"] == "true" || args["debug"] == null){
+  /* must create endpoints
 
+  --debug	If set to true, creates endlpoints /app/log/access/ which returns
+              	a JSON access log from the database and /app/error which throws 
+              	an error with the message "Error test successful." Defaults to 
+		false.
+
+*/
+  app.get("/app/log/access", (req, res, next) => {
+      const stmt = db.prepare('SELECT * FROM accesslog').all()
+      res.status(200).json(stmt)
 })
+  app.get("/app/error", (req, res, next)=>{
+    throw new Error('Error test successful.')
+  })
 
-app.get("/app/users", (req, res) =>{
-  try{
-    const stmt = db.prepare('SELECT * FROM userinfo').all()
-    res.status(200).json(stmt)
-  }catch{
-    console.error(e)
-  }
-})
 
-app.get("/app/user/:id", (req, res) =>{
+}
 
-})
-
-app.patch("/app/update/user/:id", (req, res) => {
-  try{
-    const stmt = db.prepare("SELECT * FROM userinfo WHERE id = ?").get(req.params.id)
-    res.status(200).json(stmt)
-  } catch(e){
-    console.error(e)
-  }
-})
-app.delete("/app/delete/user/:id", (req, res) => {
-
-})
-
-app.use(function(req, res){
+app.use(function(req, res, next){
   res.json({"message":"Endpoint not found. (404)"})
   res.status(404)
+  next()
 })
+
 
 // case in which --help used
 }else{
