@@ -80,7 +80,7 @@ app.get("/app", (req, res, next) => {
   next()
 })
 
-if(args["debug"] == "true" || args["debug"] == null){
+if(args["debug"] == "true"){
   /* must create endpoints
 
   --debug	If set to true, creates endlpoints /app/log/access/ which returns
@@ -93,7 +93,7 @@ if(args["debug"] == "true" || args["debug"] == null){
       const stmt = db.prepare('SELECT * FROM accesslog').all()
       res.status(200).json(stmt)
 })
-  app.get("/app/error", (req, res, next)=>{
+  app.get("/app/error", (req, res)=>{
     throw new Error('Error test successful.')
   })
 
