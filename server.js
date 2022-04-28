@@ -80,7 +80,7 @@ app.get("/app", (req, res, next) => {
   next()
 })
 
-if(args["debug"] == "true"){
+if(args["debug"] == true){
   /* must create endpoints
 
   --debug	If set to true, creates endlpoints /app/log/access/ which returns
