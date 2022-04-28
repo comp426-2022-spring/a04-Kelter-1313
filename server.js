@@ -23,7 +23,7 @@ if(args["log"] == null || args["log"] == "true"){
 // ^^ --log behavior 
 
 
-var port = args["por"]
+var port = args["port"]
 // Make this const default to port 3000 if there is no argument given for `--port`.
 if (port == null){
   port = 3000
@@ -92,7 +92,7 @@ if(args["debug"] == "true"){
   app.get("/app/error", (req, res)=>{
     throw new Error('Error test successful.')
   })
-
+ 
   app.get("/app/log/access/", (req, res, next) => {
     try{
       const stmt = db.prepare('SELECT * FROM accesslog').all()
