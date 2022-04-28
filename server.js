@@ -28,13 +28,13 @@ var port = args["port"]
 if (port == null){
   port = 3000
 }
-console.log(port)
+//console.log(port)
 // Use the fs module to create an arrow function using `fs.readFile`.
 // Use the documentation for the Node.js `fs` module. 
 // The function must read a file located at `./www/index.html` and do some stuff with it.
 // The stuff that should be inside this function is all below.
 var server = app.listen(port, () => {
-  console.log(`App is running on port ${port}`)
+//  console.log(`App is running on port ${port}`)
 })
 
 app.use((req, res, next) => {
