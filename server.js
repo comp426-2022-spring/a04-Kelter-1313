@@ -90,7 +90,7 @@ if(args["debug"] == "true"){
 
 */
   app.get("/app/error", (req, res)=>{
-    throw new Error('BROKEN')
+    console.error('Error test successful.')
   })
  
   app.get("/app/log/access/", (req, res, next) => {
