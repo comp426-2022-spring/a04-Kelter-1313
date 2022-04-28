@@ -50,8 +50,9 @@ app.use((req, res, next) => {
     referer: req.headers['referer'],
     useragent: req.headers['user-agent']
   }
-  if(args["log"] == "false"){
-
+  
+  if(args["log"] != null && args["log"] != "true"){
+    console.log("not logging")
   }else{
     const accessLog = fs.createWriteStream('access.log', { flags: 'a' })
     // Set up the access logging middleware
@@ -77,7 +78,7 @@ app.use((req, res, next) => {
 app.get("/app", (req, res, next) => {
   res.json({"message":"Your API works! (200)"})
   res.status(200)
-  next()
+  
 })
 
 if(args["debug"] == "true"){
