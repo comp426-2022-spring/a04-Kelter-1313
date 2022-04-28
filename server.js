@@ -90,7 +90,7 @@ if(args["debug"] == "true"){
 
 */
   app.get("/app/error", (req, res)=>{
-    throw new Error('Error test successful.')
+    throw new Error('BROKEN')
   })
  
   app.get("/app/log/access/", (req, res, next) => {
@@ -116,7 +116,7 @@ app.use(function(req, res, next){
 }else{
   console.log(`server.js [options]
 
-  --por		Set the port number for the server to listen on. Must be an integer
+  --port		Set the port number for the server to listen on. Must be an integer
               	between 1 and 65535.
 
   --debug	If set to true, creates endlpoints /app/log/access/ which returns
